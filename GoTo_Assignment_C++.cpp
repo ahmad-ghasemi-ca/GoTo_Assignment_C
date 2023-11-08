@@ -106,16 +106,24 @@ public:
 //Define Game
 class Game {
 private:
-    std::vector<Deck> decks;
+    std::vector<Deck> decks;  //Todo check if it is useless
     std::vector<Player> players;
     std::vector<Card> wholeShoe;
 
 public:
+
+    //Create Deck
+    Deck createDeck()
+    {
+        Deck generatedDeck;
+        return generatedDeck;
+    }
+
     // Add a deck to the game and add to the shoe
     void addDeck()
     {
-        Deck generatedDeck;
-        decks.push_back(generatedDeck);
+        Deck generatedDeck= createDeck();
+        decks.push_back(generatedDeck);  //Todo check if it is useless
 
         std::vector<Card> generatedCards = generatedDeck.getCards();
         for (auto card : generatedCards)
