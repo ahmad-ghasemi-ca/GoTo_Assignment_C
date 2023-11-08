@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <random>
 
 //needed classes:
 //  enum class Suit
@@ -20,7 +21,8 @@ enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
                     Eight, Nine, Ten, Jack, Queen, King };
 
 
-struct Card {
+struct Card
+{
     Suit suit;
     Value value;
 };
@@ -29,7 +31,7 @@ struct Card {
 class Deck
 {
 private:
-    std::vector<Card> cards;
+    std::vector<Card> cards;  //contains 52 cards
 
 public:
     Deck()
@@ -63,6 +65,11 @@ public:
 		}
 		return hand;
 	}
+
+    std::vector<Card> getCards()
+    {
+        return cards;
+    }
 };
 
 
@@ -101,12 +108,20 @@ class Game {
 private:
     std::vector<Deck> decks;
     std::vector<Player> players;
+    std::vector<Card> wholeShoe;
 
 public:
-    // Add a deck to the game
+    // Add a deck to the game and add to the shoe
     void addDeck()
     {
-        decks.emplace_back();
+        Deck generatedDeck;
+        decks.push_back(generatedDeck);
+
+        std::vector<Card> generatedCards = generatedDeck.getCards();
+        for (auto card : generatedCards)
+        {
+            wholeShoe.push_back(card);
+        }
     }
 
     // Add a player to the game
@@ -129,6 +144,23 @@ public:
         }
     }
 
+    void shuffleGameDeck()
+    {
+        // random number generator
+        std::random_device rd;
+        std::mt19937 g(rd());
+
+        // Simple random swapping algorithm
+        for (int i = static_cast<int>(wholeShoe.size()) - 1; i > 0; --i)
+        {
+            std::uniform_int_distribution<int> distribution(0, i);
+            int j = distribution(g);
+
+            // Swap cards[i] and cards[j]
+            std::swap(wholeShoe[i], wholeShoe[j]);
+        }
+    }
+    
     // Get the list of players with the total added value of all the cards each player holds
     void getPlayerListSortedByTotalValue()
     {
