@@ -1,5 +1,5 @@
 // GoTo_Assignment_C++.cpp 
-//below is theimplementation of the described system in C++.
+//below is the implementation of the described system in C++.
 //Please note that C++ does not have native support for HTTPand REST API.
 //To demonstrate the core functionality, I'll provide a simple set of classes and methods without focusing on the RESTful aspects.
 
@@ -79,7 +79,13 @@ public:
 
     // Get the total value of the player's hand
     int getTotalValue() const
-    {        
+    {
+		int totalValue = 0;
+		for (const auto& card : hand)
+		{
+			totalValue += static_cast<int>(card.value) + 1; //Assumption: ace has 1 value
+		}
+		return totalValue;
     }
 
     // Get the player's hand
