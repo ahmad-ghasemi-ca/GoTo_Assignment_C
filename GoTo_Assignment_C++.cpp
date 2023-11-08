@@ -19,20 +19,35 @@ enum class Suit { Hearts, Spades, Clubs, Diamonds };
 enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
                     Eight, Nine, Ten, Jack, Queen, King };
 
+
 struct Card {
     Suit suit;
     Value value;
 };
 
-class Deck {
+
+class Deck
+{
 private:
     std::vector<Card> cards;
 
 public:
     Deck()
-    {        
+    {  
+        initialize();
     }
     
+	void initialize()
+	{
+		cards.clear();
+		for (int i = 0; i < 4; ++i)
+        {
+			for (int j = 0; j < 13; ++j)
+            {
+				cards.push_back({ static_cast<Suit>(i), static_cast<Value>(j) });
+			}
+		}
+	}
 
     void shuffle()
     {
