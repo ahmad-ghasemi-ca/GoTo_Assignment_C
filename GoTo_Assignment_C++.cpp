@@ -130,16 +130,17 @@ public:
         players.emplace_back();
     }
 
-    // Deal cards to a player from the game deck
+    // Deal cards to a player from the shoe
     void dealCardsToPlayer(int playerIndex, int numCards)
     {
         if (playerIndex >= 0 && playerIndex < players.size())
         {
-            for (auto& deck : decks)
+            std::vector<Card> dealtCards;
+            for (size_t i = wholeShoe.size()-1; i > wholeShoe.size()-numCards; i--)
             {
-                deck.shuffle(); 
+                dealtCards.push_back(wholeShoe.back());
+                wholeShoe.pop_back();
             }
-            std::vector<Card> dealtCards = decks[0].dealCards(numCards);   //Todo: check how it should be dealt from various decks 
             players[playerIndex].addCards(dealtCards);
         }
     }
