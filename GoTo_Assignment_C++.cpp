@@ -73,7 +73,8 @@ private:
 public:
     // Add cards to the player's hand
     void addCards(const std::vector<Card>& newCards)
-    {       
+    { 
+        hand.insert(hand.end(), newCards.begin(), newCards.end());  //ToDo: double check if insertion is correct
     }
 
     // Get the total value of the player's hand
