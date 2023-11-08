@@ -96,7 +96,8 @@ private:
 public:
     // Add a deck to the game
     void addDeck()
-    {        
+    {
+        decks.emplace_back();
     }
 
     // Add a player to the game
