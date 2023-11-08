@@ -102,7 +102,8 @@ public:
 
     // Add a player to the game
     void addPlayer()
-    {       
+    {  
+        players.emplace_back();
     }
 
     // Deal cards to a player from the game deck
