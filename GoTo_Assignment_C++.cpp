@@ -4,6 +4,8 @@
 //To demonstrate the core functionality, I'll provide a simple set of classes and methods without focusing on the RESTful aspects.
 
 #include <iostream>
+#include <vector>
+#include <ctime>
 
 //needed classes:
 //  enum class Suit
@@ -17,12 +19,37 @@ enum class Suit { Hearts, Spades, Clubs, Diamonds };
 enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
                     Eight, Nine, Ten, Jack, Queen, King };
 
+struct Card {
+    Suit suit;
+    Value value;
+};
+
+class Deck {
+private:
+    std::vector<Card> cards;
+
+public:
+    Deck()
+    {        
+    }
+    
+
+    void shuffle()
+    {
+        
+    }
+
+    std::vector<Card> dealCards(int numCards)
+    {        
+    }    
+};
+
 
 
 
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    
 }
 
