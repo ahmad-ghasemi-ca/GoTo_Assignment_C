@@ -88,6 +88,7 @@ public:
 };
 
 
+//Define Game
 class Game {
 private:
     std::vector<Deck> decks;
@@ -107,8 +108,17 @@ public:
     }
 
     // Deal cards to a player from the game deck
-    void dealCardsToPlayer()
-    {        
+    void dealCardsToPlayer(int playerIndex, int numCards)
+    {
+        if (playerIndex >= 0 && playerIndex < players.size())
+        {
+            for (auto& deck : decks)
+            {
+                deck.shuffle(); 
+            }
+            std::vector<Card> dealtCards = decks[0].dealCards(numCards);   //Todo: check how it should be dealt from various decks 
+            players[playerIndex].addCards(dealtCards);
+        }
     }
 
     // Get the list of players with the total added value of all the cards each player holds
