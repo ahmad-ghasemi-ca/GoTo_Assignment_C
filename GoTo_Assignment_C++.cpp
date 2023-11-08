@@ -90,7 +90,8 @@ public:
 
     // Get the player's hand
     const std::vector<Card>& getHand() const
-    {        
+    {   
+        return hand;
     }
 };
 
