@@ -1,20 +1,28 @@
-// GoTo_Assignment_C++.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// GoTo_Assignment_C++.cpp 
+//below is theimplementation of the described system in C++.
+//Please note that C++ does not have native support for HTTPand REST API.
+//To demonstrate the core functionality, I'll provide a simple set of classes and methods without focusing on the RESTful aspects.
 
 #include <iostream>
+
+//needed classes:
+//  enum class Suit
+//	enum class Value
+//	struct Card
+//	class Deck
+//	class Player
+//	class Game
+
+enum class Suit { Hearts, Spades, Clubs, Diamonds };
+enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
+                    Eight, Nine, Ten, Jack, Queen, King };
+
+
+
+
 
 int main()
 {
     std::cout << "Hello World!\n";
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
