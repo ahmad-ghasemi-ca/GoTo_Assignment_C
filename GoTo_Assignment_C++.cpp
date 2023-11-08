@@ -66,6 +66,55 @@ public:
 };
 
 
+class Player {
+private:
+    std::vector<Card> hand;
+
+public:
+    // Add cards to the player's hand
+    void addCards(const std::vector<Card>& newCards)
+    {       
+    }
+
+    // Get the total value of the player's hand
+    int getTotalValue() const
+    {        
+    }
+
+    // Get the player's hand
+    const std::vector<Card>& getHand() const
+    {        
+    }
+};
+
+
+class Game {
+private:
+    std::vector<Deck> decks;
+    std::vector<Player> players;
+
+public:
+    // Add a deck to the game
+    void addDeck()
+    {        
+    }
+
+    // Add a player to the game
+    void addPlayer()
+    {       
+    }
+
+    // Deal cards to a player from the game deck
+    void dealCardsToPlayer()
+    {        
+    }
+
+    // Get the list of players with the total added value of all the cards each player holds
+    void getPlayerListSortedByTotalValue()
+    {
+        // Implementation
+    }
+};
 
 
 
