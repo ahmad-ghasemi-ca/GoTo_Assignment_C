@@ -51,12 +51,18 @@ public:
 
     void shuffle()
     {
-        
+       //implement 
     }
 
-    std::vector<Card> dealCards(int numCards)
-    {        
-    }    
+	std::vector<Card> dealCards(int numCards)
+	{
+		std::vector<Card> hand;
+		for (int i = 0; i < numCards && !cards.empty(); ++i) {
+			hand.push_back(cards.back());
+			cards.pop_back();
+		}
+		return hand;
+	}
 };
 
 
