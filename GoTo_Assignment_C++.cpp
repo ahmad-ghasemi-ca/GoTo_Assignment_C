@@ -13,6 +13,7 @@
 #include <utility>
 #include <map>
 #include <memory>
+#include <string>
 
 
 
@@ -26,6 +27,21 @@
 //	class Player
 //	class Game
 
+class Messages
+{
+public:
+    std::string gameHandlerUndealtCardsPerSuit = "Undealt cards count per suit are:";
+    std::string gameHandlerRemainingCards = "Remaing cards cout are:";
+    std::string gameHandlerListPlayersSorted = "list of players sorted by their hand value";
+    std::string gameHandlerNewGameCreated = "A new game created with players and decks: ";
+    std::string gameHandlerShuffleDone = "The shoe was shuffled and is ready to be dealt with this number of decks: ";
+    std::string gameHandlerListCardsplayer = "list of cards for player ";
+    std::string gameHandlerInvalidParamforGameCreation = "Invalid parameters for creating a game.";
+
+    std::string gameGetCradsErrorNoPlayer = "Get number of Cards Error: player with this number does not exist: ";
+    std::string gameDealErrorPlayerDoesNotExist = "Deal to player Error: The player does not exist in the game";
+    std::string gameRemoveErrorPlayerDoseNotExist = "Remove player Error: This player does not exist in the game";
+};
 
 enum class Suit { Hearts=1, Spades, Clubs, Diamonds };
 enum class Value { Ace=1, Two, Three, Four, Five, Six, Seven,
@@ -106,6 +122,7 @@ class Game
 private:
     std::vector<Player> players;
     std::vector<Card> shoe;
+    Messages message;
 
     //Create Deck
     Deck createDeck()
@@ -135,18 +152,25 @@ public:
     }
 
     // Remove a player to the game
-    void removePlayer(int indexToRemove) //Assumption: We need to remove a specific player in a seat (has a number)
+    void removePlayer(int playerNumberToRemove) //Assumption: We need to remove a specific player in a seat (has a number)
     {
+        int indexToRemove = playerNumberToRemove - 1;
         if (indexToRemove >= 0 && indexToRemove < static_cast<int>(players.size()))
         {
             players.erase(players.begin() + indexToRemove);
+        }
+        else
+        {
+            std::cout << "------" << std::endl;
+            std::cout << message.gameRemoveErrorPlayerDoseNotExist<< std::endl;
         }
     }
 
 
     // Deals cards to a player from the shoe
-    void dealCardsToPlayer(int playerIndex, int numCards)  
+    void dealCardsToPlayer(int playerNumber, int numCards)  
     {
+        int playerIndex = playerNumber - 1;
         if (playerIndex >= 0 && playerIndex < static_cast<int>(players.size()))
         {
             std::vector<Card> dealtCards;
@@ -158,10 +182,16 @@ public:
             }
             players.at(playerIndex).addCards(dealtCards);
         }
+        else
+        {
+            std::cout << "-------" << std::endl;
+            std::cout << message.gameDealErrorPlayerDoesNotExist<< std::endl;
+        }
     }
 
-    const std::vector<Card> getListOfCardsPlayer(int playerIndex)
+    const std::vector<Card> getListOfCardsPlayer(int playerNumber)
     {
+        int playerIndex = playerNumber;
         std::vector<Card> playerHand;
         if (playerIndex<players.size())
         {
@@ -170,7 +200,7 @@ public:
         else 
         {
             std::cout << "------" << std::endl;
-            std::cout << "Get number of Cards Error: "<<"player with index number "<<playerIndex<<" does not exist. " << std::endl;
+            std::cout << message.gameGetCradsErrorNoPlayer <<playerIndex<< std::endl;
         }
         
         return playerHand;
@@ -263,18 +293,20 @@ class GameHandler
 {
 private:
     std::shared_ptr<Game> game;
+    Messages message;
 
 public:
     GameHandler()
     {
         game = std::make_shared<Game>();
+        //message = Messages();
     }    
 
     std::shared_ptr<Game> createGame(int playerNum, int Decks)
     {
         if (Decks <= 0 || playerNum <= 0)
         {
-            std::cerr << "Invalid parameters for creating a game." << std::endl;
+            std::cerr << message.gameHandlerInvalidParamforGameCreation<< std::endl;
             return nullptr;
         }
         for (int i = 0; i < Decks; i++)
@@ -287,19 +319,20 @@ public:
             game->addPlayer();
         }
         
-        std::cout << "A new game created with " << playerNum << " players and " << Decks << " decks." << std::endl;
+        std::cout << message.gameHandlerNewGameCreated << playerNum << "," << Decks << std::endl;
 
         game->shuffleGameDeck();
-        std::cout << "The shoe containing " << Decks << " decks was shuffled and is ready to be dealt." << std::endl;
+        std::cout << message.gameHandlerShuffleDone << Decks << std::endl;
 
         return game;
     }
 
-    void displayReport(int playerIndex)
+    void displayReport(int playerNumber)
     {
+        int playerIndex = playerNumber-1;
         auto list=game->getListOfCardsPlayer(playerIndex);
         std::cout << "-----------" << std::endl;
-        std::cout << "list of cards for player " << playerIndex << " is:" << std::endl;
+        std::cout << message.gameHandlerListCardsplayer<< playerNumber << " is:" << std::endl;
         for (auto& card: list)
         {
             std::cout << "Suit: " <<static_cast<int>(card.suit) << "  Value: " << static_cast<int>(card.value) << std::endl;
@@ -307,15 +340,15 @@ public:
 
         auto list2 = game->getPlayerListSortedByTotalValue();
         std::cout << "-------" << std::endl;
-        std::cout << "list of players sorted by their hand value" << std::endl;
+        std::cout << message.gameHandlerListPlayersSorted << std::endl;
         for (auto& elem:list2)
         {
-            std::cout << "Player " << elem.first << ", Value: " << elem.second << std::endl;
+            std::cout << "Player " << elem.first+1 << ", Value: " << elem.second << std::endl;
         }
 
         auto list3 = game->getRemainingCardCount();
         std::cout << "-------" << std::endl;
-        std::cout << "Remaing cards cout are:" << std::endl;
+        std::cout << message.gameHandlerRemainingCards << std::endl;
         for (auto& elem:list3)
         {
             std::cout << "suit: " << static_cast<int>(elem.first.first) << " value: " << static_cast<int>(elem.first.second)
@@ -324,7 +357,7 @@ public:
 
         auto list4 = game->getUndealtCountPerSuit();
         std::cout << "-------" << std::endl;
-        std::cout << "Undealt cards cout per suit are:" << std::endl;
+        std::cout << message.gameHandlerUndealtCardsPerSuit << std::endl;
         for (auto& elem: list4)
         {
             std::cout << "Suit: " << static_cast<int>(elem.first) << " count: " << elem.second << std::endl;
@@ -334,23 +367,23 @@ public:
 
 
 
+
+
+
 int main()
 {
     Value val =Value::Ace ;
     std::cout << static_cast<int>(val) << std::endl;
     GameHandler gamehandler;
     auto game = gamehandler.createGame(4,1);
-    //game->removePlayer(2);
-    game->removePlayer(0);
-    game->removePlayer(1);
+    game->removePlayer(2); 
+    game->removePlayer(5);
 
-
-    game->dealCardsToPlayer(0, 1);
-    game->dealCardsToPlayer(1, 1);
-    game->dealCardsToPlayer(2, 1);
-    game->dealCardsToPlayer(3, 1);
+    game->dealCardsToPlayer(4, 3);
+    game->dealCardsToPlayer(1, 3);
+    game->dealCardsToPlayer(2, 3);    
     
-    gamehandler.displayReport(1);
+    gamehandler.displayReport(3);
     std::cout << "--end---"<< std::endl;    
 }
 
