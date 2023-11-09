@@ -7,6 +7,8 @@
 #include <vector>
 #include <ctime>
 #include <random>
+#include <unordered_map>
+
 
 //needed classes:
 //  enum class Suit
@@ -197,6 +199,20 @@ public:
 				return b.second < a.second; // Sorting in descending order
 			});
         return playerValues;
+    }
+
+    //Get undealt cards per suit 
+    std::unordered_map<Suit, int> getUndealtCountPerSuit() const
+    {
+        // Initialize a map to store the count of undealt cards per suit
+        std::unordered_map<Suit, int> undealtCount;
+
+        // Count undealt cards per suit
+        for (const auto& card : wholeShoe)
+		{
+			undealtCount[card.suit]++;
+		}
+        return undealtCount;
     }
 };
 
