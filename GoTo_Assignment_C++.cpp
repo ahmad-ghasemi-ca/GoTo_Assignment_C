@@ -294,6 +294,31 @@ public:
         {
             std::cout << "Suit: " <<static_cast<int>(card.suit) << "  Value: " << static_cast<int>(card.value) << std::endl;
         }
+
+        auto list2 = game->getPlayerListSortedByTotalValue();
+        std::cout << "-------" << std::endl;
+        std::cout << "list of players sorted by their hand value" << std::endl;
+        for (auto& elem:list2)
+        {
+            std::cout << "Player " << elem.first << ", Value: " << elem.second << std::endl;
+        }
+
+        auto list3 = game->getRemainingCardCount();
+        std::cout << "-------" << std::endl;
+        std::cout << "Remaing cards cout are:" << std::endl;
+        for (auto& elem:list3)
+        {
+            std::cout << "suit: " << static_cast<int>(elem.first.first) << " value: " << static_cast<int>(elem.first.second)
+                << ", count: " << elem.second << std::endl;
+        }
+
+        auto list4 = game->getUndealtCountPerSuit();
+        std::cout << "-------" << std::endl;
+        std::cout << "Undealt cards cout per suit are:" << std::endl;
+        for (auto& elem: list4)
+        {
+            std::cout << "Suit: " << static_cast<int>(elem.first) << " count: " << elem.second << std::endl;
+        }        
     }
 };
 
@@ -303,12 +328,13 @@ int main()
 {
     GameHandler gamehandler;
     auto game = gamehandler.createGame(3,1);
-    game->dealCardsToPlayer(0, 5);
-    game->dealCardsToPlayer(1, 5);
-    game->dealCardsToPlayer(1, 5);
-
-    gamehandler.displayReport(0);
-    std::cout << "end"<< std::endl;
+    game->removePlayer(2);
+    game->dealCardsToPlayer(0, 3);
+    game->dealCardsToPlayer(1, 3);
+    game->dealCardsToPlayer(1, 3);
+    
+    gamehandler.displayReport(1);
+    std::cout << "--end---"<< std::endl;
     
 }
 
