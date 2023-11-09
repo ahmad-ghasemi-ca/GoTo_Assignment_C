@@ -20,6 +20,7 @@
 //	class Player
 //	class Game
 
+
 enum class Suit { Hearts, Spades, Clubs, Diamonds };
 enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
                     Eight, Nine, Ten, Jack, Queen, King };
@@ -37,25 +38,25 @@ class Deck
 private:
     std::vector<Card> cards;  //contains 52 cards
 
+    void initialize()
+    {
+        cards.clear();
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 13; ++j)
+            {
+                cards.push_back({ static_cast<Suit>(i), static_cast<Value>(j) });
+            }
+        }
+    }
+
 public:
     Deck()
     {  
         initialize();
     }
-    
-	void initialize()
-	{
-		cards.clear();
-		for (int i = 0; i < 4; ++i)
-        {
-			for (int j = 0; j < 13; ++j)
-            {
-				cards.push_back({ static_cast<Suit>(i), static_cast<Value>(j) });
-			}
-		}
-	}    
 
-	std::vector<Card> dealCards(int numCards)
+	std::vector<Card> dealCards(int numCards)  //ToDo: ckeck if it is useless
 	{
 		std::vector<Card> hand;
 		for (int i = 0; i < numCards && !cards.empty(); ++i) {
