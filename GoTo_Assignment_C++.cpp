@@ -31,10 +31,9 @@ class Messages
 {
 public:
     std::string gameHandlerUndealtCardsPerSuit = "Undealt cards count per suit are:";
-    std::string gameHandlerRemainingCards = "Remaing cards cout are:";
+    std::string gameHandlerRemainingCards = "Remaing cards count are:";
     std::string gameHandlerListPlayersSorted = "list of players sorted by their hand value";
     std::string gameHandlerNewGameCreated = "A new game created with players and decks: ";
-    std::string gameHandlerShuffleDone = "The shoe was shuffled and is ready to be dealt with this number of decks: ";
     std::string gameHandlerListCardsplayer = "list of cards for player ";
     std::string gameHandlerInvalidParamforGameCreation = "Invalid parameters for creating a game.";
     std::string gameHandlerGameDeleted = "Game ended!";
@@ -42,6 +41,12 @@ public:
     std::string gameGetCradsErrorNoPlayer = "Get number of Cards Error: player with this number does not exist: ";
     std::string gameDealErrorPlayerDoesNotExist = "Deal to player Error: The player does not exist in the game";
     std::string gameRemoveErrorPlayerDoseNotExist = "Remove player Error: This player does not exist in the game";
+    std::string gameRemovePlayerSuccess = "The player with this number were removed: ";
+    std::string gameCardsDealtSuccess = "This numbers of crads were dealt to player: ";
+    std::string gameShuffleGameDeckSuccess = "The shoe was shuffled!";
+    std::string gameShuffleGameDeckFailed = "Shuffle Error: There is not enough cards to shuffle";
+    std::string getPlayerListSortedByTotalValueFailed = "Player cards list Error: There is no player to get the hand";
+
 };
 
 enum class Suit { Hearts=1, Spades, Clubs, Diamonds };
@@ -158,6 +163,8 @@ public:
         if (indexToRemove >= 0 && indexToRemove < static_cast<int>(players.size()))
         {
             players.erase(players.begin() + indexToRemove);
+            std::cout << "-------" << std::endl;
+            std::cout << message.gameRemovePlayerSuccess << playerNumberToRemove<< std::endl;
         }
         else
         {
@@ -181,6 +188,8 @@ public:
                 shoe.pop_back();
             }
             players.at(playerIndex).addCards(dealtCards);
+            std::cout << "-------" << std::endl;
+            std::cout << message.gameCardsDealtSuccess <<numCards<<" , "<< playerNumber<< std::endl;
         }
         else
         {
@@ -213,14 +222,24 @@ public:
         std::mt19937 g(rd());
 
         // Simple random swapping algorithm
-        for (size_t i = shoe.size() - 1; i > 0; --i)
+        if (shoe.size()>1)
         {
-            std::uniform_int_distribution<int> distribution(0, i);
-            int j = distribution(g);
+            for (size_t i = shoe.size() - 1; i > 0; --i)
+            {
+                std::uniform_int_distribution<int> distribution(0, i);
+                int j = distribution(g);
 
-            // Swap cards[i] and cards[j]
-            std::swap(shoe.at(i), shoe.at(j));
+                // Swap cards[i] and cards[j]
+                std::swap(shoe.at(i), shoe.at(j));
+            }
+            std::cout << "------" << std::endl;
+            std::cout << message.gameShuffleGameDeckSuccess << std::endl; std::cout << "------" << std::endl;
         }
+        else 
+        {
+            std::cout << "------" << std::endl;
+            std::cout << message.gameShuffleGameDeckFailed << std::endl;            
+        }        
     }
     
     // Get the list of players with the total added value of all the cards each player holds
@@ -228,18 +247,28 @@ public:
     {        
         std::vector<std::pair<int, int>> playerValues;
 
-        // Calculate and store total values for each player
-        for (size_t i = 0; i < players.size(); ++i)
+        if (players.size()>0)
         {
-            playerValues.emplace_back(i, players.at(i).getTotalValue());
-        }
+            // Calculate and store total values for each player
+            for (size_t i = 0; i < players.size(); ++i)
+            {
+                playerValues.emplace_back(i, players.at(i).getTotalValue());
+            }
 
-        // Sort the vector of pairs based on total values in descending order
-		std::sort(playerValues.begin(), playerValues.end(), [](const auto& a, const auto& b)
-			{
-				return b.second < a.second; // Sorting in descending order
-			});
-        return playerValues;
+            // Sort the vector of pairs based on total values in descending order
+            std::sort(playerValues.begin(), playerValues.end(), [](const auto& a, const auto& b)
+                {
+                    return b.second < a.second; // Sorting in descending order
+                });           
+
+            return playerValues;
+        }
+        else 
+        {
+            std::cout << "------" << std::endl;
+            std::cout << message.getPlayerListSortedByTotalValueFailed << std::endl;           
+        }
+        
     }
 
     //Get undealt cards per suit 
@@ -319,7 +348,6 @@ public:
         std::cout << message.gameHandlerNewGameCreated << playerNum << "," << Decks << std::endl;
 
         game->shuffleGameDeck();
-        std::cout << message.gameHandlerShuffleDone << Decks << std::endl;
 
         return game;
     }
