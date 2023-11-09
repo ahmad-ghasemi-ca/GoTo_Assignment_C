@@ -53,12 +53,7 @@ public:
 				cards.push_back({ static_cast<Suit>(i), static_cast<Value>(j) });
 			}
 		}
-	}
-
-    void shuffle()
-    {
-       //implement 
-    }
+	}    
 
 	std::vector<Card> dealCards(int numCards)
 	{
