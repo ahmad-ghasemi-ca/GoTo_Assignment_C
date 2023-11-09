@@ -27,8 +27,8 @@
 //	class Game
 
 
-enum class Suit { Hearts, Spades, Clubs, Diamonds };
-enum class Value { Ace, Two, Three, Four, Five, Six, Seven,
+enum class Suit { Hearts=1, Spades, Clubs, Diamonds };
+enum class Value { Ace=1, Two, Three, Four, Five, Six, Seven,
                     Eight, Nine, Ten, Jack, Queen, King };
 
 
@@ -47,9 +47,9 @@ private:
     void initialize()
     {
         cards.clear();
-        for (int i = 0; i < 4; ++i)
+        for (int i = 1; i < 5; ++i)
         {
-            for (int j = 0; j < 13; ++j)
+            for (int j = 1; j < 14; ++j)
             {
                 cards.push_back({ static_cast<Suit>(i), static_cast<Value>(j) });
             }
@@ -87,7 +87,7 @@ public:
 		int totalValue = 0;
 		for (const auto& card : hand)
 		{
-			totalValue += static_cast<int>(card.value) + 1; //Assumption: ace has value 1
+			totalValue += static_cast<int>(card.value); //Assumption: ace has value 1
 		}
 		return totalValue;
     }
@@ -165,7 +165,7 @@ public:
         std::vector<Card> playerHand;
         if (playerIndex<players.size())
         {
-            playerHand = players.at(playerIndex -1).getHand();
+            playerHand = players.at(playerIndex).getHand();
         }
         else 
         {
@@ -336,8 +336,10 @@ public:
 
 int main()
 {
+    Value val =Value::Ace ;
+    std::cout << static_cast<int>(val) << std::endl;
     GameHandler gamehandler;
-    auto game = gamehandler.createGame(3,1);
+    auto game = gamehandler.createGame(4,1);
     //game->removePlayer(2);
     game->removePlayer(0);
     game->removePlayer(1);
