@@ -59,7 +59,8 @@ public:
 	std::vector<Card> dealCards(int numCards)  //ToDo: ckeck if it is useless
 	{
 		std::vector<Card> hand;
-		for (int i = 0; i < numCards && !cards.empty(); ++i) {
+		for (int i = 0; i < numCards && !cards.empty(); ++i) // Does not deal the 53'th card
+        {
 			hand.push_back(cards.back());
 			cards.pop_back();
 		}
@@ -108,7 +109,7 @@ class Game {
 private:
     std::vector<Deck> decks;  //Todo: check if it is useless
     std::vector<Player> players;
-    std::vector<Card> wholeShoe;
+    std::vector<Card> shoe;
 
 public:
 
@@ -128,7 +129,7 @@ public:
         std::vector<Card> generatedCards = generatedDeck.getCards();
         for (auto card : generatedCards)
         {
-            wholeShoe.push_back(card);
+            shoe.push_back(card);
         }
     }
 
@@ -154,10 +155,10 @@ public:
         if (playerIndex >= 0 && playerIndex < players.size())
         {
             std::vector<Card> dealtCards;
-            for (size_t i = wholeShoe.size()-1; i > wholeShoe.size()-numCards; i--)
+            for (size_t i = shoe.size()-1; i > shoe.size()-numCards; i--)
             {
-                dealtCards.push_back(wholeShoe.back());
-                wholeShoe.pop_back();
+                dealtCards.push_back(shoe.back());
+                shoe.pop_back();
             }
             players[playerIndex].addCards(dealtCards);
         }
@@ -170,13 +171,13 @@ public:
         std::mt19937 g(rd());
 
         // Simple random swapping algorithm
-        for (int i = static_cast<int>(wholeShoe.size()) - 1; i > 0; --i)
+        for (int i = static_cast<int>(shoe.size()) - 1; i > 0; --i)
         {
             std::uniform_int_distribution<int> distribution(0, i);
             int j = distribution(g);
 
             // Swap cards[i] and cards[j]
-            std::swap(wholeShoe[i], wholeShoe[j]);
+            std::swap(shoe[i], shoe[j]);
         }
     }
     
@@ -206,7 +207,7 @@ public:
         std::unordered_map<Suit, int> undealtCount;
 
         // Count undealt cards per suit
-        for (const auto& card : wholeShoe)
+        for (const auto& card : shoe)
 		{
 			undealtCount[card.suit]++;
 		}
@@ -220,7 +221,7 @@ public:
         std::unordered_map<std::pair<Suit, Value>, int> cardCount;
 
         // Count remaining cards per suit and value
-        for (const auto& card : wholeShoe)
+        for (const auto& card : shoe)
         {            
                 cardCount[{card.suit, card.value}]++;            
         }
