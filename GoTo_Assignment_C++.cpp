@@ -1,6 +1,6 @@
 // GoTo_Assignment_C++.cpp 
 //below is the implementation of the described system in C++.
-//Please note that C++ does not have native support for HTTPand REST API.
+//Please note that C++ does not have native support for REST API.
 //To demonstrate the core functionality, I'll provide a simple set of classes and methods without focusing on the RESTful aspects.
 
 #include <iostream>
@@ -106,7 +106,7 @@ public:
 //Define Game
 class Game {
 private:
-    std::vector<Deck> decks;  //Todo check if it is useless
+    std::vector<Deck> decks;  //Todo: check if it is useless
     std::vector<Player> players;
     std::vector<Card> wholeShoe;
 
@@ -123,7 +123,7 @@ public:
     void addDeck()
     {
         Deck generatedDeck= createDeck();
-        decks.push_back(generatedDeck);  //Todo check if it is useless
+        decks.push_back(generatedDeck);  //Todo: check if it is useless
 
         std::vector<Card> generatedCards = generatedDeck.getCards();
         for (auto card : generatedCards)
@@ -138,8 +138,18 @@ public:
         players.emplace_back();
     }
 
+    // Remove a player to the game
+    void removePlayer(int indexToRemove) //Assumption: We need to remove a specific player in a seat (has a number)
+    {
+        if (indexToRemove >= 0 && indexToRemove < players.size())
+        {
+            players.erase(players.begin() + indexToRemove);
+        }
+    }
+
+
     // Deal cards to a player from the shoe
-    void dealCardsToPlayer(int playerIndex, int numCards)
+    void dealCardsToPlayer(int playerIndex, int numCards)  //ToDo: check the condition of 53 cards
     {
         if (playerIndex >= 0 && playerIndex < players.size())
         {
