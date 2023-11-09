@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <utility>
 #include <map>
+#include <memory>
+
 
 
 
@@ -157,9 +159,10 @@ public:
         }
     }
 
-    const std::vector<Card>& getListOfCardsPlayer(int playerIndex)
+    const std::vector<Card> getListOfCardsPlayer(int playerIndex)
     {
-        return players.at(playerIndex).getHand();
+        std::vector<Card> playerHand= players.at(playerIndex).getHand();
+        return playerHand;
     }
 
     void shuffleGameDeck()
@@ -244,24 +247,53 @@ public:
 
 };
 
+
 class GameHandler
 {
+private:
+    std::shared_ptr<Game> game;
+
 public:
-    Game createGame(int playerNum, int Decks)
+    GameHandler()
     {
-        Game game;
+        game = std::make_shared<Game>();
+    }    
+
+    std::shared_ptr<Game> createGame(int playerNum, int Decks)
+    {
+        if (Decks <= 0 || playerNum <= 0)
+        {
+            std::cerr << "Invalid parameters for creating a game." << std::endl;
+            return nullptr;
+        }
         for (int i = 0; i < Decks; i++)
         {
-            game.addDeckToShoe();
+            game->addDeckToShoe();
         }
 
         for (int i = 0; i < playerNum; i++)
         {
-            game.addPlayer();
+            game->addPlayer();
+        }
+        
+        std::cout << "A new game created with " << playerNum << " players and " << Decks << " decks." << std::endl;
+
+        game->shuffleGameDeck();
+        std::cout << "The shoe containing " << Decks << " decks was shuffled and is ready to be dealt." << std::endl;
+
+        return game;
+    }
+
+    void displayReport(int playerIndex)
+    {
+        auto list=game->getListOfCardsPlayer(playerIndex);
+        std::cout << "-----------" << std::endl;
+        std::cout << "list of cards for player " << playerIndex << " is:" << std::endl;
+        for (auto& card: list)
+        {
+            std::cout << "Suit: " <<static_cast<int>(card.suit) << "  Value: " << static_cast<int>(card.value) << std::endl;
         }
 
-        game.shuffleGameDeck();
-        return game;
     }
 };
 
@@ -270,11 +302,13 @@ public:
 int main()
 {
     GameHandler gamehandler;
-    auto game = gamehandler.createGame(3,4);
-    game.dealCardsToPlayer(0, 3);
-    game.dealCardsToPlayer(1, 3);
-    game.dealCardsToPlayer(1, 3);
+    auto game = gamehandler.createGame(3,1);
+    game->dealCardsToPlayer(0, 3);
+    game->dealCardsToPlayer(1, 3);
+    game->dealCardsToPlayer(1, 3);
 
+    gamehandler.displayReport(0);
+    std::cout << "end"<< std::endl;
     
 }
 
