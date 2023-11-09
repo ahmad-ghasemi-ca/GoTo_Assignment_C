@@ -90,7 +90,7 @@ public:
 		int totalValue = 0;
 		for (const auto& card : hand)
 		{
-			totalValue += static_cast<int>(card.value) + 1; //Assumption: ace has 1 value
+			totalValue += static_cast<int>(card.value) + 1; //Assumption: ace has value 1
 		}
 		return totalValue;
     }
@@ -181,9 +181,22 @@ public:
     }
     
     // Get the list of players with the total added value of all the cards each player holds
-    void getPlayerListSortedByTotalValue()
-    {
-        // Implementation
+    std::vector<std::pair<int, int>> getPlayerListSortedByTotalValue()
+    {        
+        std::vector<std::pair<int, int>> playerValues;
+
+        // Calculate and store total values for each player
+        for (int i = 0; i < players.size(); ++i)
+        {
+            playerValues.emplace_back(i, players[i].getTotalValue());
+        }
+
+        // Sort the vector of pairs based on total values in descending order
+		std::sort(playerValues.begin(), playerValues.end(), [](const auto& a, const auto& b)
+			{
+				return b.second < a.second; // Sorting in descending order
+			});
+        return playerValues;
     }
 };
 
