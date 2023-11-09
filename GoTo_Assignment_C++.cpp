@@ -3,6 +3,8 @@
 //Please note that C++ does not have native support for REST API.
 //To demonstrate the core functionality, I'll provide a simple set of classes and methods without focusing on the RESTful aspects.
 
+// I add various comments inside the code to convey my thought knowing the facts that most of them are not needed in real code
+
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -213,6 +215,31 @@ public:
 			undealtCount[card.suit]++;
 		}
         return undealtCount;
+    }
+
+    //Calculate the count of each remaining card sorted by suit and value
+    std::unordered_map<std::pair<Suit, Value>, int> getRemainingCardCount() const
+    {
+        // Initialize a map to store the count of remaining cards per suit and value
+        std::unordered_map<std::pair<Suit, Value>, int> cardCount;
+
+        // Count remaining cards per suit and value
+        for (const auto& card : wholeShoe)
+        {            
+                cardCount[{card.suit, card.value}]++;            
+        }
+
+        // Define a custom comparator for sorting by suit and face value
+        auto comparator = [](const auto& a, const auto& b) {
+            if (a.first == b.first) {
+                return static_cast<int>(a.second) > static_cast<int>(b.second);
+            }
+            return static_cast<int>(a.first) > static_cast<int>(b.first);  
+        };
+
+        // Sort based on Suit name and Value
+        std::sort(cardCount.begin(), cardCount.end(), comparator);
+        return cardCount;
     }
 };
 
