@@ -16,9 +16,6 @@
 #include <string>
 
 
-
-
-
 //needed classes:
 //  enum class Suit
 //	enum class Value
@@ -26,6 +23,9 @@
 //	class Deck
 //	class Player
 //	class Game
+//  class Gamehandler
+//  class Messages
+
 
 class Messages
 {
@@ -116,7 +116,6 @@ public:
 };
 
 
-//Define Game
 class Game
 {
 private:
@@ -284,8 +283,6 @@ public:
 
         return cardVector;
     }
-
-
 };
 
 
@@ -327,6 +324,7 @@ public:
         return game;
     }
 
+    // Generates and displays a report on the status of the game
     void displayReport(int playerNumber)
     {
         int playerIndex = playerNumber-1;
@@ -361,29 +359,26 @@ public:
         for (auto& elem: list4)
         {
             std::cout << "Suit: " << static_cast<int>(elem.first) << " count: " << elem.second << std::endl;
-        }        
+        }  
+
+        std::cout << "----end-----" << std::endl;
     }
 };
 
 
 
-
-
-
 int main()
-{
-    Value val =Value::Ace ;
-    std::cout << static_cast<int>(val) << std::endl;
+{    
     GameHandler gamehandler;
-    auto game = gamehandler.createGame(4,1);
-    game->removePlayer(2); 
-    game->removePlayer(5);
+    auto game = gamehandler.createGame(4,1); //Creates a game with given number of players and decks and shuffles the shoe.
+    game->removePlayer(2);
 
-    game->dealCardsToPlayer(4, 3);
-    game->dealCardsToPlayer(1, 3);
-    game->dealCardsToPlayer(2, 3);    
+    game->shuffleGameDeck(); // On demand shuffle of the shoe.
     
-    gamehandler.displayReport(3);
-    std::cout << "--end---"<< std::endl;    
+    game->dealCardsToPlayer(1, 15); //Deals the given player number the given number of cards
+    game->dealCardsToPlayer(2, 15);
+    game->dealCardsToPlayer(3, 15);    
+
+    gamehandler.displayReport(3); // displays status of the game and especially cards on the hand of the given player.
 }
 
