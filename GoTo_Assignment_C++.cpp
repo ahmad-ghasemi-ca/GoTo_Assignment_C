@@ -37,6 +37,7 @@ public:
     std::string gameHandlerShuffleDone = "The shoe was shuffled and is ready to be dealt with this number of decks: ";
     std::string gameHandlerListCardsplayer = "list of cards for player ";
     std::string gameHandlerInvalidParamforGameCreation = "Invalid parameters for creating a game.";
+    std::string gameHandlerGameDeleted = "Game ended!";
 
     std::string gameGetCradsErrorNoPlayer = "Get number of Cards Error: player with this number does not exist: ";
     std::string gameDealErrorPlayerDoesNotExist = "Deal to player Error: The player does not exist in the game";
@@ -289,17 +290,17 @@ public:
 class GameHandler
 {
 private:
-    std::shared_ptr<Game> game;
+    Game* game;
     Messages message;
 
 public:
     GameHandler()
     {
-        game = std::make_shared<Game>();
-        //message = Messages();
+        //game = std::make_shared<Game>();
+        game = new Game();
     }    
 
-    std::shared_ptr<Game> createGame(int playerNum, int Decks)
+    Game* createGame(int playerNum, int Decks)
     {
         if (Decks <= 0 || playerNum <= 0)
         {
@@ -363,6 +364,13 @@ public:
 
         std::cout << "----end-----" << std::endl;
     }
+
+    void deleteGame()
+    {
+        delete game;
+        std::cout << std::endl;
+        std::cout << message.gameHandlerGameDeleted << std::endl;
+    }
 };
 
 
@@ -370,15 +378,16 @@ public:
 int main()
 {    
     GameHandler gamehandler;
-    auto game = gamehandler.createGame(4,1); //Creates a game with given number of players and decks and shuffles the shoe.
+    auto game = gamehandler.createGame(4,2); //Creates a game with given number of players and decks and shuffles the shoe.
     game->removePlayer(2);
 
     game->shuffleGameDeck(); // On demand shuffle of the shoe.
     
-    game->dealCardsToPlayer(1, 15); //Deals the given player number the given number of cards
+    game->dealCardsToPlayer(1, 15); //Deals the given player the given number of cards
     game->dealCardsToPlayer(2, 15);
     game->dealCardsToPlayer(3, 15);    
 
     gamehandler.displayReport(3); // displays status of the game and especially cards on the hand of the given player.
+    gamehandler.deleteGame(); 
 }
 
