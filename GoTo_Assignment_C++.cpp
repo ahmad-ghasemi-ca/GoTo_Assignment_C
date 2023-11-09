@@ -150,7 +150,8 @@ public:
         if (playerIndex >= 0 && playerIndex < static_cast<int>(players.size()))
         {
             std::vector<Card> dealtCards;
-            for (size_t i = shoe.size()-1; i > shoe.size()-1-numCards && !shoe.empty(); i--) //does not deal if shoe is empty.
+            size_t shoeSize = shoe.size();
+            for (size_t i = shoeSize -1; i > shoeSize -1-numCards && !shoe.empty(); i--) //does not deal if shoe is empty.
             {
                 dealtCards.push_back(shoe.back());
                 shoe.pop_back();
@@ -293,7 +294,6 @@ public:
         {
             std::cout << "Suit: " <<static_cast<int>(card.suit) << "  Value: " << static_cast<int>(card.value) << std::endl;
         }
-
     }
 };
 
@@ -303,9 +303,9 @@ int main()
 {
     GameHandler gamehandler;
     auto game = gamehandler.createGame(3,1);
-    game->dealCardsToPlayer(0, 3);
-    game->dealCardsToPlayer(1, 3);
-    game->dealCardsToPlayer(1, 3);
+    game->dealCardsToPlayer(0, 5);
+    game->dealCardsToPlayer(1, 5);
+    game->dealCardsToPlayer(1, 5);
 
     gamehandler.displayReport(0);
     std::cout << "end"<< std::endl;
