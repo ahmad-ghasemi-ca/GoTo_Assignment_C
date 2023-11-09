@@ -10,6 +10,10 @@
 #include <ctime>
 #include <random>
 #include <unordered_map>
+#include <utility>
+#include <map>
+
+
 
 
 //needed classes:
@@ -56,14 +60,15 @@ public:
         initialize();
     }	
 
-    std::vector<Card> getCards()
+    std::vector<Card>& getCards()
     {
         return cards;
     }
 };
 
 
-class Player {
+class Player
+{
 private:
     std::vector<Card> hand;
 
@@ -94,12 +99,11 @@ public:
 
 
 //Define Game
-class Game {
+class Game
+{
 private:
     std::vector<Player> players;
     std::vector<Card> shoe;
-
-public:
 
     //Create Deck
     Deck createDeck()
@@ -107,6 +111,8 @@ public:
         Deck generatedDeck;
         return generatedDeck;
     }
+
+public:    
 
     // Add a deck to the game and add to the shoe
     void addDeckToShoe()
@@ -129,7 +135,7 @@ public:
     // Remove a player to the game
     void removePlayer(int indexToRemove) //Assumption: We need to remove a specific player in a seat (has a number)
     {
-        if (indexToRemove >= 0 && indexToRemove < players.size())
+        if (indexToRemove >= 0 && indexToRemove < static_cast<int>(players.size()))
         {
             players.erase(players.begin() + indexToRemove);
         }
@@ -139,7 +145,7 @@ public:
     // Deals cards to a player from the shoe
     void dealCardsToPlayer(int playerIndex, int numCards)  
     {
-        if (playerIndex >= 0 && playerIndex < players.size())
+        if (playerIndex >= 0 && playerIndex < static_cast<int>(players.size()))
         {
             std::vector<Card> dealtCards;
             for (size_t i = shoe.size()-1; i > shoe.size()-1-numCards && !shoe.empty(); i--) //does not deal if shoe is empty.
@@ -179,7 +185,7 @@ public:
         std::vector<std::pair<int, int>> playerValues;
 
         // Calculate and store total values for each player
-        for (int i = 0; i < players.size(); ++i)
+        for (size_t i = 0; i < players.size(); ++i)
         {
             playerValues.emplace_back(i, players.at(i).getTotalValue());
         }
@@ -205,39 +211,70 @@ public:
 		}
         return undealtCount;
     }
+    
 
-    //Calculate the count of each remaining card sorted by suit and value
-    std::unordered_map<std::pair<Suit, Value>, int> getRemainingCardCount() const
+    std::vector<std::pair<std::pair<Suit, Value>, int>> getRemainingCardCount() const
     {
         // Initialize a map to store the count of remaining cards per suit and value
-        std::unordered_map<std::pair<Suit, Value>, int> cardCount;
+        std::map<std::pair<Suit, Value>, int> cardCount;
 
         // Count remaining cards per suit and value
         for (const auto& card : shoe)
-        {            
-                cardCount[{card.suit, card.value}]++;            
+        {
+            cardCount[{card.suit, card.value}]++;
         }
+
+        // Copy elements to a vector for sorting
+        std::vector<std::pair<std::pair<Suit, Value>, int>> cardVector(cardCount.begin(), cardCount.end());
 
         // Define a custom comparator for sorting by suit and face value
         auto comparator = [](const auto& a, const auto& b) {
-            if (a.first == b.first) {
-                return static_cast<int>(a.second) > static_cast<int>(b.second);
+            if (a.first.first == b.first.first) {
+                return static_cast<int>(a.first.second) > static_cast<int>(b.first.second);
             }
-            return static_cast<int>(a.first) > static_cast<int>(b.first);  
+            return static_cast<int>(a.first.first) > static_cast<int>(b.first.first);
         };
 
         // Sort based on Suit name and Value
-        std::sort(cardCount.begin(), cardCount.end(), comparator);
-        return cardCount;
+        std::sort(cardVector.begin(), cardVector.end(), comparator);
+
+        return cardVector;
+    }
+
+
+};
+
+class GameHandler
+{
+public:
+    Game createGame(int playerNum, int Decks)
+    {
+        Game game;
+        for (int i = 0; i < Decks; i++)
+        {
+            game.addDeckToShoe();
+        }
+
+        for (int i = 0; i < playerNum; i++)
+        {
+            game.addPlayer();
+        }
+
+        game.shuffleGameDeck();
+        return game;
     }
 };
 
 
 
-
-
 int main()
 {
+    GameHandler gamehandler;
+    auto game = gamehandler.createGame(3,4);
+    game.dealCardsToPlayer(0, 3);
+    game.dealCardsToPlayer(1, 3);
+    game.dealCardsToPlayer(1, 3);
+
     
 }
 
