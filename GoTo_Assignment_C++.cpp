@@ -162,7 +162,17 @@ public:
 
     const std::vector<Card> getListOfCardsPlayer(int playerIndex)
     {
-        std::vector<Card> playerHand= players.at(playerIndex).getHand();
+        std::vector<Card> playerHand;
+        if (playerIndex<players.size())
+        {
+            playerHand = players.at(playerIndex -1).getHand();
+        }
+        else 
+        {
+            std::cout << "------" << std::endl;
+            std::cout << "Get number of Cards Error: "<<"player with index number "<<playerIndex<<" does not exist. " << std::endl;
+        }
+        
         return playerHand;
     }
 
@@ -328,13 +338,17 @@ int main()
 {
     GameHandler gamehandler;
     auto game = gamehandler.createGame(3,1);
-    game->removePlayer(2);
-    game->dealCardsToPlayer(0, 3);
-    game->dealCardsToPlayer(1, 3);
-    game->dealCardsToPlayer(1, 3);
+    //game->removePlayer(2);
+    game->removePlayer(0);
+    game->removePlayer(1);
+
+
+    game->dealCardsToPlayer(0, 1);
+    game->dealCardsToPlayer(1, 1);
+    game->dealCardsToPlayer(2, 1);
+    game->dealCardsToPlayer(3, 1);
     
     gamehandler.displayReport(1);
-    std::cout << "--end---"<< std::endl;
-    
+    std::cout << "--end---"<< std::endl;    
 }
 
