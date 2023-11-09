@@ -296,7 +296,6 @@ private:
 public:
     GameHandler()
     {
-        //game = std::make_shared<Game>();
         game = new Game();
     }    
 
@@ -368,8 +367,17 @@ public:
     void deleteGame()
     {
         delete game;
+        game = nullptr;
         std::cout << std::endl;
         std::cout << message.gameHandlerGameDeleted << std::endl;
+    }
+
+    ~GameHandler()
+    {
+        if (game !=nullptr)
+        {
+            delete game;
+        }        
     }
 };
 
