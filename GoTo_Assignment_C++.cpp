@@ -54,18 +54,7 @@ public:
     Deck()
     {  
         initialize();
-    }
-
-	//std::vector<Card> dealCards(int numCards)  //ToDo: ckeck if it is useless
-	//{
-	//	std::vector<Card> hand;
-	//	for (int i = 0; i < numCards && !cards.empty(); ++i) // Does not deal the 53'th card
- //       {
-	//		hand.push_back(cards.back());
-	//		cards.pop_back();
-	//	}
-	//	return hand;
-	//}
+    }	
 
     std::vector<Card> getCards()
     {
@@ -82,7 +71,7 @@ public:
     // Add cards to the player's hand
     void addCards(const std::vector<Card>& newCards)
     { 
-        hand.insert(hand.end(), newCards.begin(), newCards.end());  //ToDo: double check if insertion is correct
+        hand.insert(hand.end(), newCards.begin(), newCards.end());  
     }
 
     // Get the total value of the player's hand
@@ -107,7 +96,6 @@ public:
 //Define Game
 class Game {
 private:
-    //std::vector<Deck> decks;  //Todo: check if it is useless
     std::vector<Player> players;
     std::vector<Card> shoe;
 
@@ -124,7 +112,6 @@ public:
     void addDeckToShoe()
     {
         Deck generatedDeck= createDeck();
-        //decks.push_back(generatedDeck);  //Todo: check if it is useless
 
         std::vector<Card> generatedCards = generatedDeck.getCards();
         for (auto& card : generatedCards)
@@ -176,13 +163,13 @@ public:
         std::mt19937 g(rd());
 
         // Simple random swapping algorithm
-        for (int i = static_cast<int>(shoe.size()) - 1; i > 0; --i)
+        for (size_t i = shoe.size() - 1; i > 0; --i)
         {
             std::uniform_int_distribution<int> distribution(0, i);
             int j = distribution(g);
 
             // Swap cards[i] and cards[j]
-            std::swap(shoe[i], shoe[j]);
+            std::swap(shoe.at(i), shoe.at(j));
         }
     }
     
@@ -194,7 +181,7 @@ public:
         // Calculate and store total values for each player
         for (int i = 0; i < players.size(); ++i)
         {
-            playerValues.emplace_back(i, players[i].getTotalValue());
+            playerValues.emplace_back(i, players.at(i).getTotalValue());
         }
 
         // Sort the vector of pairs based on total values in descending order
@@ -245,30 +232,12 @@ public:
     }
 };
 
-class GameHandler
-{
-private:
-    Game* game;
 
-public:
-    Game* createGame()
-    {
-        game=new Game;
-        return game;
-    }
-
-    void deleteGame()
-    {
-        delete game;
-    }
-};
 
 
 
 int main()
 {
-    GameHandler gameHandler;
-    auto game= gameHandler.createGame();
-    gameHandler.deleteGame();
+    
 }
 
