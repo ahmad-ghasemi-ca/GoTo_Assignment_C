@@ -56,16 +56,16 @@ public:
         initialize();
     }
 
-	std::vector<Card> dealCards(int numCards)  //ToDo: ckeck if it is useless
-	{
-		std::vector<Card> hand;
-		for (int i = 0; i < numCards && !cards.empty(); ++i) // Does not deal the 53'th card
-        {
-			hand.push_back(cards.back());
-			cards.pop_back();
-		}
-		return hand;
-	}
+	//std::vector<Card> dealCards(int numCards)  //ToDo: ckeck if it is useless
+	//{
+	//	std::vector<Card> hand;
+	//	for (int i = 0; i < numCards && !cards.empty(); ++i) // Does not deal the 53'th card
+ //       {
+	//		hand.push_back(cards.back());
+	//		cards.pop_back();
+	//	}
+	//	return hand;
+	//}
 
     std::vector<Card> getCards()
     {
@@ -107,7 +107,7 @@ public:
 //Define Game
 class Game {
 private:
-    std::vector<Deck> decks;  //Todo: check if it is useless
+    //std::vector<Deck> decks;  //Todo: check if it is useless
     std::vector<Player> players;
     std::vector<Card> shoe;
 
@@ -121,13 +121,13 @@ public:
     }
 
     // Add a deck to the game and add to the shoe
-    void addDeck()
+    void addDeckToShoe()
     {
         Deck generatedDeck= createDeck();
-        decks.push_back(generatedDeck);  //Todo: check if it is useless
+        //decks.push_back(generatedDeck);  //Todo: check if it is useless
 
         std::vector<Card> generatedCards = generatedDeck.getCards();
-        for (auto card : generatedCards)
+        for (auto& card : generatedCards)
         {
             shoe.push_back(card);
         }
@@ -149,19 +149,24 @@ public:
     }
 
 
-    // Deal cards to a player from the shoe
-    void dealCardsToPlayer(int playerIndex, int numCards)  //ToDo: check the condition of 53 cards
+    // Deals cards to a player from the shoe
+    void dealCardsToPlayer(int playerIndex, int numCards)  
     {
         if (playerIndex >= 0 && playerIndex < players.size())
         {
             std::vector<Card> dealtCards;
-            for (size_t i = shoe.size()-1; i > shoe.size()-numCards; i--)
+            for (size_t i = shoe.size()-1; i > shoe.size()-1-numCards && !shoe.empty(); i--) //does not deal if shoe is empty.
             {
                 dealtCards.push_back(shoe.back());
                 shoe.pop_back();
             }
-            players[playerIndex].addCards(dealtCards);
+            players.at(playerIndex).addCards(dealtCards);
         }
+    }
+
+    const std::vector<Card>& getListOfCardsPlayer(int playerIndex)
+    {
+        return players.at(playerIndex).getHand();
     }
 
     void shuffleGameDeck()
@@ -240,10 +245,30 @@ public:
     }
 };
 
+class GameHandler
+{
+private:
+    Game* game;
+
+public:
+    Game* createGame()
+    {
+        game=new Game;
+        return game;
+    }
+
+    void deleteGame()
+    {
+        delete game;
+    }
+};
+
 
 
 int main()
 {
-    
+    GameHandler gameHandler;
+    auto game= gameHandler.createGame();
+    gameHandler.deleteGame();
 }
 
