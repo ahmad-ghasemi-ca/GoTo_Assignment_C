@@ -47,6 +47,7 @@ public:
     std::string gameShuffleGameDeckFailed = "Shuffle Error: There is not enough cards to shuffle";
     std::string getPlayerListSortedByTotalValueFailed = "Player cards list Error: There is no player to get the hand";
 
+    std::string line = "----------";
 };
 
 enum class Suit { Hearts=1, Spades, Clubs, Diamonds };
@@ -163,12 +164,12 @@ public:
         if (indexToRemove >= 0 && indexToRemove < static_cast<int>(players.size()))
         {
             players.erase(players.begin() + indexToRemove);
-            std::cout << "-------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameRemovePlayerSuccess << playerNumberToRemove<< std::endl;
         }
         else
         {
-            std::cout << "------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameRemoveErrorPlayerDoseNotExist<< std::endl;
         }
     }
@@ -188,12 +189,12 @@ public:
                 shoe.pop_back();
             }
             players.at(playerIndex).addCards(dealtCards);
-            std::cout << "-------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameCardsDealtSuccess <<numCards<<" , "<< playerNumber<< std::endl;
         }
         else
         {
-            std::cout << "-------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameDealErrorPlayerDoesNotExist<< std::endl;
         }
     }
@@ -208,7 +209,7 @@ public:
         }
         else 
         {
-            std::cout << "------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameGetCradsErrorNoPlayer <<playerIndex<< std::endl;
         }
         
@@ -232,12 +233,12 @@ public:
                 // Swap cards[i] and cards[j]
                 std::swap(shoe.at(i), shoe.at(j));
             }
-            std::cout << "------" << std::endl;
-            std::cout << message.gameShuffleGameDeckSuccess << std::endl; std::cout << "------" << std::endl;
+            std::cout << message.line << std::endl;
+            std::cout << message.gameShuffleGameDeckSuccess << std::endl;
         }
         else 
         {
-            std::cout << "------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.gameShuffleGameDeckFailed << std::endl;            
         }        
     }
@@ -265,7 +266,7 @@ public:
         }
         else 
         {
-            std::cout << "------" << std::endl;
+            std::cout << message.line << std::endl;
             std::cout << message.getPlayerListSortedByTotalValueFailed << std::endl;           
         }
         
@@ -357,7 +358,7 @@ public:
     {
         int playerIndex = playerNumber-1;
         auto list=game->getListOfCardsPlayer(playerIndex);
-        std::cout << "-----------" << std::endl;
+        std::cout << message.line << std::endl;
         std::cout << message.gameHandlerListCardsplayer<< playerNumber << " is:" << std::endl;
         for (auto& card: list)
         {
@@ -365,7 +366,7 @@ public:
         }
 
         auto list2 = game->getPlayerListSortedByTotalValue();
-        std::cout << "-------" << std::endl;
+        std::cout << message.line << std::endl;
         std::cout << message.gameHandlerListPlayersSorted << std::endl;
         for (auto& elem:list2)
         {
@@ -373,7 +374,7 @@ public:
         }
 
         auto list3 = game->getRemainingCardCount();
-        std::cout << "-------" << std::endl;
+        std::cout << message.line << std::endl;
         std::cout << message.gameHandlerRemainingCards << std::endl;
         for (auto& elem:list3)
         {
@@ -382,7 +383,7 @@ public:
         }
 
         auto list4 = game->getUndealtCountPerSuit();
-        std::cout << "-------" << std::endl;
+        std::cout << message.line << std::endl;
         std::cout << message.gameHandlerUndealtCardsPerSuit << std::endl;
         for (auto& elem: list4)
         {
@@ -414,14 +415,14 @@ public:
 int main()
 {    
     GameHandler gamehandler;
-    auto game = gamehandler.createGame(4,2); //Creates a game with given number of players and decks and shuffles the shoe.
+    auto game = gamehandler.createGame(4,1); //Creates a game with given number of players and decks and shuffles the shoe.
     game->removePlayer(2);
 
     game->shuffleGameDeck(); // On demand shuffle of the shoe.
     
-    game->dealCardsToPlayer(1, 15); //Deals the given player the given number of cards
-    game->dealCardsToPlayer(2, 15);
-    game->dealCardsToPlayer(3, 15);    
+    game->dealCardsToPlayer(1, 5); //Deals the given player the given number of cards
+    game->dealCardsToPlayer(2, 5);
+    game->dealCardsToPlayer(3, 5); 
 
     gamehandler.displayReport(3); // displays status of the game and especially cards on the hand of the given player.
     gamehandler.deleteGame(); 
