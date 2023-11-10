@@ -264,9 +264,7 @@ public:
 			std::sort(playerValues.begin(), playerValues.end(), [](const auto& a, const auto& b)
 				{
 					return b.second < a.second; // Sorting in descending order
-				});
-
-			return playerValues;
+				});			
 		}
 		else
 		{
@@ -274,6 +272,7 @@ public:
 			std::cout << message.getPlayerListSortedByTotalValueFailed << std::endl;
 		}
 
+		return playerValues;
 	}
 
 	//Get undealt cards per suit 
@@ -419,8 +418,8 @@ public:
 int main()
 {
 	GameHandler gamehandler;
-	auto game = gamehandler.createGame(4, 1); //Creates a game with given number of players and decks and shuffles the shoe.
-	//game->removePlayer(2);
+	auto game = gamehandler.createGame(1, 1); //Creates a game with given number of players and decks and shuffles the shoe.
+	game->removePlayer(1);
 
 	game->shuffleGameDeck(); // On demand shuffle of the shoe.
 
@@ -429,7 +428,7 @@ int main()
 	game->dealCardsToPlayer(3, 5);
 	game->dealCardsToPlayer(4, 5);
 
-	gamehandler.displayReport(-1); // displays status of the game and especially cards on the hand of the given player.
+	gamehandler.displayReport(1); // displays status of the game and especially cards on the hand of the given player.
 	gamehandler.deleteGame();
 }
 
