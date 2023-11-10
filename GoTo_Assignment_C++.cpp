@@ -203,16 +203,16 @@ public:
 
 	const std::vector<Card> getListOfCardsPlayer(int playerNumber)
 	{
-		int playerIndex = playerNumber;
+		int playerIndex = playerNumber-1;
 		std::vector<Card> playerHand;
-		if (playerIndex < players.size())
+		if (playerIndex < players.size() && playerIndex>=0)
 		{
 			playerHand = players.at(playerIndex).getHand();
 		}
 		else
 		{
 			std::cout << message.line << std::endl;
-			std::cout << message.gameGetCradsErrorNoPlayer << playerIndex << std::endl;
+			std::cout << message.gameGetCradsErrorNoPlayer << playerNumber << std::endl;
 		}
 
 		return playerHand;
@@ -358,8 +358,8 @@ public:
 	// Generates and displays a report on the status of the game
 	void displayReport(int playerNumber)
 	{
-		int playerIndex = playerNumber - 1;
-		auto list = game->getListOfCardsPlayer(playerIndex);
+		//int playerIndex = playerNumber - 1;
+		auto list = game->getListOfCardsPlayer(playerNumber);
 		std::cout << message.line << std::endl;
 		std::cout << message.gameHandlerListCardsplayer << playerNumber << " is:" << std::endl;
 		for (auto& card : list)
@@ -418,15 +418,16 @@ int main()
 {
 	GameHandler gamehandler;
 	auto game = gamehandler.createGame(4, 1); //Creates a game with given number of players and decks and shuffles the shoe.
-	game->removePlayer(2);
+	//game->removePlayer(2);
 
 	game->shuffleGameDeck(); // On demand shuffle of the shoe.
 
 	game->dealCardsToPlayer(1, 5); //Deals the given player the given number of cards
 	game->dealCardsToPlayer(2, 5);
 	game->dealCardsToPlayer(3, 5);
+	game->dealCardsToPlayer(4, 5);
 
-	gamehandler.displayReport(3); // displays status of the game and especially cards on the hand of the given player.
+	gamehandler.displayReport(-1); // displays status of the game and especially cards on the hand of the given player.
 	gamehandler.deleteGame();
 }
 
