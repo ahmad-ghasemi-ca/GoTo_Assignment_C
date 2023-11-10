@@ -418,7 +418,7 @@ public:
 int main()
 {
 	GameHandler gamehandler;
-	auto game = gamehandler.createGame(1, 1); //Creates a game with given number of players and decks and shuffles the shoe.
+	auto game = gamehandler.createGame(4, 1); //Creates a game with given number of players and decks and shuffles the shoe.
 	game->removePlayer(1);
 
 	game->shuffleGameDeck(); // On demand shuffle of the shoe.
