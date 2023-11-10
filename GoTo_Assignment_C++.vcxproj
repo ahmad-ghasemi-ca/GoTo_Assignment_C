@@ -140,6 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GoTo_Assignment_C++.cpp" />
+    <ClCompile Include="IGame.cpp" />
+    <ClCompile Include="IGameHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IGame.h" />
+    <ClInclude Include="IGameHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,6 +14,8 @@
 #include <map>
 #include <memory>
 #include <string>
+#include "IGame.h"
+#include "IGameHandler.h"
 
 
 //needed classes:
@@ -125,7 +127,7 @@ public:
 };
 
 
-class Game
+class Game: public IGame
 {
 private:
 	std::vector<Player> players;
@@ -319,7 +321,7 @@ public:
 };
 
 
-class GameHandler
+class GameHandler: public IGameHandler
 {
 private:
 	Game* game;
